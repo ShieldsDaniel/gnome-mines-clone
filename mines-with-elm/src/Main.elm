@@ -1,53 +1,82 @@
 module Main exposing (..)
 
 import Browser
-import Html exposing (Html, text, div, h1, img)
-import Html.Attributes exposing (src)
+import Html exposing (..)
 
+type alias Cell =
+    { value: Int
+    , isSelected: Bool
+    }
 
----- MODEL ----
+type GameState
+    = GameWon
+    | GameLost
+    | GameInProgress
+    | GameSettings
+
 
 type alias Model =
-    {}
-
-
-init : ( Model, Cmd Msg )
-init =
-    ( {}, Cmd.none )
-
-
-
----- UPDATE ----
+    { gameState: GameState
+    , gameBoard: List Cell
+    }
 
 
 type Msg
-    = NoOp
+    = None
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+        None ->
+            ( model, Cmd.none )
 
 
+subscriptions : Model -> Sub Msg
+subscriptions _ =
+    Sub.none
 
----- VIEW ----
+-- * ------ View ------- * --
 
+gameOptions : List (Html Msg)
+gameOption =
+    [ div [] []
+    , div [] []
+    , div [] []
+    , div [] []
+    ]
+
+gameSettingsView : Html Msg
+gameSettingsView =
+    div []
+        gameOptions
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ h1 [] [ text "Your Elm App is working!" ] ]
+    case model.gameState of
+        GameSettings ->
+            gameSettingsView
+        _ ->
+            div []
+                [ text "New Element" ]
 
+-- * ------ Main ------- * --
 
-
----- PROGRAM ----
+initModel : (Model, Cmd Msg)
+initModel =
+    ( {
+        gameState = GameSettings
+      , gameBoard = []
+      }
+    , Cmd.none
+    )
 
 
 main : Program () Model Msg
 main =
     Browser.element
-        { view = view
-        , init = \_ -> init
+        { init = \_ -> initModel
+        , view = view
         , update = update
-        , subscriptions = always Sub.none
+        , subscriptions = subscriptions
         }

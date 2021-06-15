@@ -9,15 +9,21 @@ type AdjacentCells = {
   topLeft: number;
 };
 
-const leftEdgeIndexes = (numberOfColumns: number, numberOfRows: number): number[] => {
+const leftEdgeIndexes = (
+  numberOfColumns: number,
+  numberOfRows: number
+): number[] => {
   const indexes: number[] = [];
   for (let i = 0; i < numberOfRows; i++) {
-    indexes.push(i * numberOfColumns)
+    indexes.push(i * numberOfColumns);
   }
   return indexes;
 };
 
-const rightEdgeIndexes = (numberOfColumns: number, numberOfRows: number): number[] => {
+const rightEdgeIndexes = (
+  numberOfColumns: number,
+  numberOfRows: number
+): number[] => {
   const indexes: number[] = [];
   for (let i = 1; i <= numberOfRows; i++) {
     indexes.push(i * numberOfColumns - 1);
@@ -59,7 +65,7 @@ const checkForCorner = (
   numberOfRows: number,
   adjacentCells: AdjacentCells
 ): AdjacentCells => {
-  const lastIndex = (numberOfColumns * numberOfRows) - 1;
+  const lastIndex = numberOfColumns * numberOfRows - 1;
   if (positionBeingChecked === 0) {
     adjacentCells = removeTop(adjacentCells);
     adjacentCells = removeLeft(adjacentCells);
@@ -84,11 +90,22 @@ const checkForEdge = (
 ): AdjacentCells => {
   if (positionBeingChecked < numberOfColumns) {
     adjacentCells = removeTop(adjacentCells);
-  } else if (positionBeingChecked >= (numberOfColumns * numberOfRows) - numberOfRows) {
+  } else if (
+    positionBeingChecked >=
+    numberOfColumns * numberOfRows - numberOfRows
+  ) {
     adjacentCells = removeBottom(adjacentCells);
-  } else if (leftEdgeIndexes(numberOfColumns, numberOfRows).includes(positionBeingChecked)) {
+  } else if (
+    leftEdgeIndexes(numberOfColumns, numberOfRows).includes(
+      positionBeingChecked
+    )
+  ) {
     adjacentCells = removeLeft(adjacentCells);
-  } else if (rightEdgeIndexes(numberOfColumns, numberOfRows).includes(positionBeingChecked)) {
+  } else if (
+    rightEdgeIndexes(numberOfColumns, numberOfRows).includes(
+      positionBeingChecked
+    )
+  ) {
     adjacentCells = removeRight(adjacentCells);
   }
   return adjacentCells;
@@ -111,7 +128,19 @@ export const getAdjacentCellIndexList = (
     left: positionBeingChecked - 1,
     topLeft: top - 1,
   };
-  adjacentCells = checkForCorner(positionBeingChecked, numberOfColumns, numberOfRows, adjacentCells);
-  adjacentCells = checkForEdge(positionBeingChecked, numberOfColumns, numberOfRows, adjacentCells);
-  return Object.values(adjacentCells).filter(c => c >= 0).sort((a, b) => a - b);
+  adjacentCells = checkForCorner(
+    positionBeingChecked,
+    numberOfColumns,
+    numberOfRows,
+    adjacentCells
+  );
+  adjacentCells = checkForEdge(
+    positionBeingChecked,
+    numberOfColumns,
+    numberOfRows,
+    adjacentCells
+  );
+  return Object.values(adjacentCells)
+    .filter((c) => c >= 0)
+    .sort((a, b) => a - b);
 };
