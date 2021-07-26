@@ -39,7 +39,7 @@ subscriptions _ =
 -- * ------ View ------- * --
 
 gameOptions : List (Html Msg)
-gameOption =
+gameOptions =
     [ div [] []
     , div [] []
     , div [] []
